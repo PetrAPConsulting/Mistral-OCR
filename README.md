@@ -34,7 +34,7 @@ A simple, self-hosted web application for optical character recognition (OCR) po
    ```bash
    npm start
    ```
-   The server will run on `http://localhost:3001` You can change local server if this one is already use. Do not forget make change in HTML front end and `proxy-server.js`
+   The server will run on `http://localhost:3001` You can change local server if this one is already used. Do not forget make change in HTML front end and `proxy-server.js`
 
 2. Open `Mistral_OCR.html` in your web browser
 
