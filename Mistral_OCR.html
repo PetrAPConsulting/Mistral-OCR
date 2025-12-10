@@ -1,0 +1,903 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mistral OCR - AP Consulting</title>
+    <link rel="icon" type="image/png" href="https://static.wixstatic.com/media/12837a_1bb6f875d1c54e13b93430928d5cb676~mv2.png">
+    <link href="https://fonts.googleapis.com/css2?family=Verdana&display=swap" rel="stylesheet">
+    <style>
+        @import url('https://fonts.cdnfonts.com/css/switzer');
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: Verdana, Geneva, sans-serif;
+            color: #666666;
+        }
+        
+        h1, h2, h3, h4, h5, h6 {
+            font-family: 'Switzer', Tahoma, sans-serif;
+            font-weight: 700;
+        }
+        
+        .brand-primary {
+            color: #00A38C;
+        }
+        
+        .brand-dark {
+            color: #333333;
+        }
+        
+        .bg-brand-light-teal {
+            background-color: #E6FFFC;
+        }
+        
+        .bg-brand-light-orange {
+            background-color: #FFF2E6;
+        }
+        
+        .btn-primary {
+            background-color: #00A38C;
+            color: white;
+            transition: background-color 0.3s ease;
+        }
+        
+        .btn-primary:hover:not(:disabled) {
+            background-color: #006859;
+        }
+        
+        .btn-secondary {
+            background-color: #FF8000;
+            color: white;
+            transition: background-color 0.3s ease;
+        }
+        
+        .btn-secondary:hover:not(:disabled) {
+            background-color: #cc6600;
+        }
+        
+        .btn-analog {
+            background-color: #0067A3;
+            color: white;
+            transition: background-color 0.3s ease;
+        }
+        
+        .btn-analog:hover:not(:disabled) {
+            background-color: #004d7a;
+        }
+        
+        .drag-over {
+            border-color: #00A38C !important;
+            background-color: #E6FFFC !important;
+        }
+        
+        .focus-brand:focus {
+            outline: none;
+            border-color: #00A38C;
+            box-shadow: 0 0 0 3px rgba(0, 163, 140, 0.1);
+        }
+        
+        .logo-container {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 2rem;
+            padding-bottom: 1rem;
+            border-bottom: 2px solid #E6FFFC;
+        }
+        
+        .status-card {
+            border-radius: 8px;
+            padding: 1.25rem;
+            margin-bottom: 1.5rem;
+            border: 1px solid;
+        }
+        
+        .status-info {
+            background-color: #E6FFFC;
+            border-color: #00A38C;
+        }
+        
+        .status-warning {
+            background-color: #FFF2E6;
+            border-color: #FF8000;
+        }
+        
+        .status-error {
+            background-color: #fee;
+            border-color: #dc2626;
+        }
+        
+        .input-field {
+            width: 100%;
+            padding: 0.75rem;
+            border: 2px solid #e5e7eb;
+            border-radius: 6px;
+            font-family: Verdana, Geneva, sans-serif;
+            color: #333333;
+            transition: border-color 0.3s ease;
+        }
+        
+        .input-field:focus {
+            outline: none;
+            border-color: #00A38C;
+            box-shadow: 0 0 0 3px rgba(0, 163, 140, 0.1);
+        }
+        
+        .section-title {
+            font-size: 0.875rem;
+            font-weight: 600;
+            color: #333333;
+            margin-bottom: 0.75rem;
+            font-family: 'Switzer', Tahoma, sans-serif;
+        }
+        
+        a.brand-primary:hover {
+            color: #006859;
+        }
+
+        /* Container utilities (replacing Tailwind) */
+        .page-container {
+            min-height: 100vh;
+            padding: 2rem 1rem;
+        }
+
+        .content-wrapper {
+            max-width: 896px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+    </style>
+</head>
+<body style="background-color: #f8f9fa;">
+    <div class="page-container">
+        <div class="content-wrapper">
+            <!-- Header with Logo -->
+            <div class="logo-container">
+                <div style="display: flex; align-items: center; gap: 1rem;">
+                    <!-- AP Consulting Logo -->
+                    <a href="https://www.apconsulting.cz/" target="_blank" rel="noopener noreferrer" style="display: block;">
+                        <img 
+                            src="https://apconsulting.cz/images/apconsultinglogo.png" 
+                            alt="AP Consulting" 
+                            style="max-width: 140px; height: auto; display: block;"
+                        />
+                    </a>
+                </div>
+            </div>
+            
+            <!-- Main Card -->
+            <div style="background: white; border-radius: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); padding: 2.5rem;">
+                <!-- Title -->
+                <h1 style="font-size: 2rem; margin-bottom: 0.5rem; line-height: 1.4;">
+                    <div style="display: flex; align-items: center; justify-content: center; gap: 0.25rem;">
+                        <span class="brand-primary">Mistral</span>
+                        <span class="brand-dark">OCR</span>
+                    </div>    
+                </h1>
+                <p style="text-align: center; color: #666666; margin-bottom: 2rem; font-size: 0.95rem;">
+                    Advanced optical character recognition powered by AI
+                </p>
+
+                <!-- Proxy Status -->
+                <div id="proxy-status" class="status-card status-info">
+                    <div style="display: flex; justify-content: space-between; align-items: start; gap: 1rem;">
+                        <div style="flex: 1;">
+                            <p id="proxy-status-text" style="font-weight: 600; color: #333333; margin-bottom: 0.5rem;">
+                                Proxy Server: Checking...
+                            </p>
+                            <p style="color: #666666; font-size: 0.875rem; line-height: 1.6;">
+                                Start the proxy server (port 3001): <code style="background-color: #E6FFFC; padding: 0.25rem 0.5rem; border-radius: 4px; color: #00A38C; font-family: monospace;">node proxy-server.js</code>
+                                <br><small style="color: #666666;">Load Key → Upload file → Process OCR</small>
+                            </p>
+                        </div>
+                        <button
+                            id="refresh-proxy"
+                            class="btn-primary"
+                            style="padding: 0.5rem 1rem; border: none; border-radius: 6px; font-size: 0.875rem; cursor: pointer; white-space: nowrap;"
+                        >
+                            Refresh
+                        </button>
+                    </div>
+                </div>
+
+                <!-- API Key Management -->
+                <div style="margin-bottom: 2rem;">
+                    <label class="section-title">
+                        🔑 API Key Management
+                    </label>
+                    
+                    <!-- API Key Input -->
+                    <div style="margin-bottom: 1rem;">
+                        <input
+                            type="password"
+                            id="api-key"
+                            class="input-field"
+                            placeholder="Enter new Mistral API key to save"
+                        />
+                    </div>
+                    
+                    <!-- Password Input -->
+                    <div style="margin-bottom: 1rem;">
+                        <input
+                            type="password"
+                            id="password"
+                            class="input-field"
+                            placeholder="Enter password to encrypt/decrypt API key"
+                        />
+                    </div>
+                    
+                    <!-- Key Management Buttons -->
+                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 0.75rem; margin-bottom: 0.75rem;">
+                        <button
+                            id="save-key"
+                            class="btn-primary"
+                            style="padding: 0.75rem; border: none; border-radius: 6px; font-size: 0.875rem; cursor: pointer; font-weight: 500;"
+                        >
+                            💾 Save & Encrypt Key
+                        </button>
+                        
+                        <button
+                            id="load-key"
+                            class="btn-analog"
+                            style="padding: 0.75rem; border: none; border-radius: 6px; font-size: 0.875rem; cursor: pointer; font-weight: 500;"
+                        >
+                            🔓 Load Key
+                        </button>
+                        
+                        <button
+                            id="clear-key"
+                            style="padding: 0.75rem; border: none; border-radius: 6px; font-size: 0.875rem; cursor: pointer; font-weight: 500; background-color: #dc2626; color: white;"
+                        >
+                            🗑️ Clear Key
+                        </button>
+                    </div>
+                    
+                    <!-- Key Status -->
+                    <div id="key-status" style="margin-top: 0.75rem; font-size: 0.875rem; color: #666666; padding: 0.75rem; background-color: #f8f9fa; border-radius: 6px;">
+                        Checking for saved API key...
+                    </div>
+                    
+                    <div style="margin-top: 0.75rem; font-size: 0.8rem; color: #666666; line-height: 1.5;">
+                        <strong style="color: #333333;">Security:</strong> API key is encrypted and stored locally. Password required each session.
+                    </div>
+                </div>
+
+                <!-- File Upload -->
+                <div style="margin-bottom: 2rem;">
+                    <label class="section-title">
+                        Upload File
+                    </label>
+                    <div id="drop-zone" style="border: 2px dashed #d1d5db; border-radius: 8px; padding: 2.5rem 1.5rem; text-align: center; cursor: pointer; transition: all 0.3s ease; background-color: #fafafa;">
+                        <input
+                            type="file"
+                            id="file-input"
+                            accept=".pdf,.jpg,.jpeg,.png,.gif,.bmp,.tiff,.tif,.webp"
+                            style="display: none;"
+                        />
+                        <div style="font-size: 3.5rem; margin-bottom: 1rem; opacity: 0.6;">📄</div>
+                        <span style="color: #333333; font-weight: 500; font-size: 1rem;">
+                            Click to upload or drag and drop
+                        </span>
+                        <p style="font-size: 0.875rem; color: #666666; margin-top: 0.5rem;">
+                            PDF, JPG, PNG, GIF, BMP, TIFF, WebP (max 20MB)
+                        </p>
+                    </div>
+                    <div id="file-info" style="margin-top: 0.75rem; font-size: 0.875rem; color: #00A38C; display: none;"></div>
+                </div>
+
+                <!-- Error Display -->
+                <div id="error-display" class="status-card status-error" style="display: none;">
+                    <p id="error-text" style="color: #dc2626; font-weight: 500;"></p>
+                </div>
+
+                <!-- Processing Status -->
+                <div id="processing-status" class="status-card status-warning" style="display: none;">
+                    <p id="processing-text" style="color: #333333; font-weight: 500;"></p>
+                </div>
+
+                <!-- Process Button -->
+                <div style="margin-bottom: 2rem;">
+                    <button
+                        id="process-btn"
+                        class="btn-primary"
+                        style="width: 100%; padding: 1rem; border: none; border-radius: 8px; font-size: 1rem; font-weight: 600; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all 0.3s ease;"
+                        disabled
+                    >
+                        Process with OCR
+                    </button>
+                </div>
+
+                <!-- Results -->
+                <div id="results-section" style="border-top: 2px solid #E6FFFC; padding-top: 2rem; display: none;">
+                    <h2 style="font-size: 1.5rem; margin-bottom: 1.5rem;">
+                        <span class="brand-primary">Processing</span>
+                        <span class="brand-dark">Results</span>
+                    </h2>
+                    
+                    <!-- Statistics -->
+                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 1rem; margin-bottom: 1.5rem;">
+                        <div style="background-color: #E6FFFC; padding: 1rem; border-radius: 8px; text-align: center;">
+                            <div style="font-size: 1.75rem; font-weight: 700; color: #00A38C;" id="pages-count">0</div>
+                            <div style="font-size: 0.875rem; color: #666666; margin-top: 0.25rem;">Pages</div>
+                        </div>
+                        <div style="background-color: #FFF2E6; padding: 1rem; border-radius: 8px; text-align: center;">
+                            <div style="font-size: 1.75rem; font-weight: 700; color: #FF8000;" id="total-images">0</div>
+                            <div style="font-size: 0.875rem; color: #666666; margin-top: 0.25rem;">Images</div>
+                        </div>
+                    </div>
+                    
+                    <!-- Preview -->
+                    <div style="margin-bottom: 1.5rem; padding: 1.25rem; background-color: #f8f9fa; border-radius: 8px; max-height: 16rem; overflow-y: auto; border: 1px solid #e5e7eb;">
+                        <h3 style="font-weight: 600; margin-bottom: 0.75rem; color: #333333; font-size: 0.95rem;">Content Preview:</h3>
+                        <pre id="content-preview" style="font-size: 0.875rem; color: #666666; white-space: pre-wrap; font-family: Verdana, Geneva, sans-serif; line-height: 1.6;"></pre>
+                    </div>
+
+                    <!-- Download Buttons -->
+                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 1rem;">
+                        <button
+                            id="download-markdown"
+                            class="btn-primary"
+                            style="display: flex; align-items: center; justify-content: center; padding: 0.875rem 1rem; border: none; border-radius: 8px; cursor: pointer; font-weight: 500;"
+                        >
+                            📄 Download Markdown
+                        </button>
+                        
+                        <button
+                            id="download-json"
+                            class="btn-analog"
+                            style="display: flex; align-items: center; justify-center; padding: 0.875rem 1rem; border: none; border-radius: 8px; cursor: pointer; font-weight: 500;"
+                        >
+                            📦 Download JSON
+                        </button>
+                        
+                        <button
+                            id="download-images"
+                            class="btn-secondary"
+                            style="display: flex; align-items: center; justify-center; padding: 0.875rem 1rem; border: none; border-radius: 8px; cursor: pointer; font-weight: 500;"
+                        >
+                            🖼️ Download Images (<span id="image-count">0</span>)
+                        </button>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Footer -->
+            <div style="text-align: center; margin-top: 2rem; color: #666666; font-size: 0.875rem;">
+                <p>Powered by <a href="https://mistral.ai/solutions/document-ai" target="_blank" rel="noopener noreferrer" class="brand-primary" style="font-weight: 600; text-decoration: none;">MistralOCR</a></p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // DOM elements
+        const apiKeyInput = document.getElementById('api-key');
+        const passwordInput = document.getElementById('password');
+        const saveKeyBtn = document.getElementById('save-key');
+        const loadKeyBtn = document.getElementById('load-key');
+        const clearKeyBtn = document.getElementById('clear-key');
+        const keyStatus = document.getElementById('key-status');
+        const dropZone = document.getElementById('drop-zone');
+        const fileInput = document.getElementById('file-input');
+        const fileInfo = document.getElementById('file-info');
+        const processBtn = document.getElementById('process-btn');
+        const errorDisplay = document.getElementById('error-display');
+        const errorText = document.getElementById('error-text');
+        const processingStatus = document.getElementById('processing-status');
+        const processingText = document.getElementById('processing-text');
+        const resultsSection = document.getElementById('results-section');
+        const contentPreview = document.getElementById('content-preview');
+        const proxyStatus = document.getElementById('proxy-status');
+        const proxyStatusText = document.getElementById('proxy-status-text');
+        const refreshProxyBtn = document.getElementById('refresh-proxy');
+
+        let selectedFile = null;
+        let sessionApiKey = '';
+        let ocrResults = null;
+        let proxyStatusState = 'unchecked';
+
+        // Encryption functions
+        async function generateKey(password, salt) {
+            const encoder = new TextEncoder();
+            const passwordKey = await crypto.subtle.importKey(
+                'raw',
+                encoder.encode(password),
+                'PBKDF2',
+                false,
+                ['deriveKey']
+            );
+            
+            return await crypto.subtle.deriveKey(
+                {
+                    name: 'PBKDF2',
+                    salt: salt,
+                    iterations: 100000,
+                    hash: 'SHA-256'
+                },
+                passwordKey,
+                { name: 'AES-GCM', length: 256 },
+                false,
+                ['encrypt', 'decrypt']
+            );
+        }
+
+        async function encryptApiKey(apiKey, password) {
+            const encoder = new TextEncoder();
+            const salt = crypto.getRandomValues(new Uint8Array(16));
+            const iv = crypto.getRandomValues(new Uint8Array(12));
+            
+            const key = await generateKey(password, salt);
+            const encrypted = await crypto.subtle.encrypt(
+                { name: 'AES-GCM', iv: iv },
+                key,
+                encoder.encode(apiKey)
+            );
+            
+            return {
+                encrypted: Array.from(new Uint8Array(encrypted)),
+                salt: Array.from(salt),
+                iv: Array.from(iv)
+            };
+        }
+
+        async function decryptApiKey(encryptedData, password) {
+            const key = await generateKey(password, new Uint8Array(encryptedData.salt));
+            
+            const decrypted = await crypto.subtle.decrypt(
+                { name: 'AES-GCM', iv: new Uint8Array(encryptedData.iv) },
+                key,
+                new Uint8Array(encryptedData.encrypted)
+            );
+            
+            const decoder = new TextDecoder();
+            return decoder.decode(decrypted);
+        }
+
+        // Show error message
+        function showError(message) {
+            errorText.textContent = message;
+            errorDisplay.style.display = 'block';
+            setTimeout(() => {
+                errorDisplay.style.display = 'none';
+            }, 10000);
+        }
+
+        // Hide error
+        function hideError() {
+            errorDisplay.style.display = 'none';
+        }
+
+        // Show processing status
+        function showProcessing(message) {
+            processingText.textContent = message;
+            processingStatus.style.display = 'block';
+        }
+
+        // Hide processing status
+        function hideProcessing() {
+            processingStatus.style.display = 'none';
+        }
+
+        // Check proxy server status
+        async function checkProxyStatus() {
+            proxyStatusText.innerHTML = '<span style="font-weight: 600; color: #FF8000;">Proxy Server: Checking...</span>';
+            
+            try {
+                const response = await fetch('http://localhost:3001/health');
+                if (response.ok) {
+                    proxyStatusState = 'online';
+                    proxyStatusText.innerHTML = '<span style="color: #00A38C; font-weight: 600;">✓ Proxy Server: Online</span>';
+                    proxyStatus.style.backgroundColor = '#E6FFFC';
+                    proxyStatus.style.borderColor = '#00A38C';
+                    hideError();
+                } else {
+                    throw new Error('Server not responding');
+                }
+            } catch (error) {
+                proxyStatusState = 'offline';
+                proxyStatusText.innerHTML = '<span style="color: #dc2626; font-weight: 600;">✗ Proxy Server: Offline</span>';
+                proxyStatus.style.backgroundColor = '#fee';
+                proxyStatus.style.borderColor = '#dc2626';
+                showError('Proxy server is not running. Please start the proxy server first.');
+            }
+            updateProcessButton();
+        }
+
+        // Save API key
+        async function saveApiKey() {
+            const apiKey = apiKeyInput.value.trim();
+            const password = passwordInput.value.trim();
+
+            if (!apiKey) {
+                showError('Please enter an API key');
+                return;
+            }
+
+            if (!password) {
+                showError('Please enter a password for encryption');
+                return;
+            }
+
+            try {
+                const encryptedData = await encryptApiKey(apiKey, password);
+                localStorage.setItem('mistral_encrypted_key', JSON.stringify(encryptedData));
+                
+                sessionApiKey = apiKey;
+                keyStatus.textContent = '✓ API key saved and loaded successfully';
+                keyStatus.style.color = '#00A38C';
+                apiKeyInput.value = '';
+                passwordInput.value = '';
+                updateProcessButton();
+                hideError();
+            } catch (error) {
+                showError('Failed to save API key: ' + error.message);
+            }
+        }
+
+        // Load API key
+        async function loadApiKey() {
+            const password = passwordInput.value.trim();
+
+            if (!password) {
+                showError('Please enter your password');
+                return;
+            }
+
+            const encryptedKey = localStorage.getItem('mistral_encrypted_key');
+            if (!encryptedKey) {
+                showError('No saved API key found');
+                return;
+            }
+
+            try {
+                const parsed = JSON.parse(encryptedKey);
+                sessionApiKey = await decryptApiKey(parsed, password);
+                keyStatus.textContent = '✓ API key loaded successfully';
+                keyStatus.style.color = '#00A38C';
+                passwordInput.value = '';
+                updateProcessButton();
+                hideError();
+            } catch (error) {
+                showError('Failed to load API key: ' + error.message);
+                sessionApiKey = '';
+                keyStatus.textContent = '✗ Failed to load API key';
+                keyStatus.style.color = '#dc2626';
+            }
+        }
+
+        // Clear API key
+        function clearApiKey() {
+            if (confirm('Are you sure you want to delete the saved API key?')) {
+                localStorage.removeItem('mistral_encrypted_key');
+                sessionApiKey = '';
+                keyStatus.textContent = 'API key cleared from storage';
+                keyStatus.style.color = '#666666';
+                apiKeyInput.value = '';
+                passwordInput.value = '';
+                updateProcessButton();
+            }
+        }
+
+        // Check for stored key on load
+        function checkStoredKey() {
+            const hasKey = localStorage.getItem('mistral_encrypted_key');
+            if (hasKey) {
+                keyStatus.textContent = '🔒 Encrypted API key found - enter password to load';
+                keyStatus.style.color = '#0067A3';
+            } else {
+                keyStatus.textContent = 'No saved API key found';
+                keyStatus.style.color = '#666666';
+            }
+        }
+
+        // Handle file selection
+        function handleFile(file) {
+            const maxSize = 20 * 1024 * 1024; // 20MB
+
+            if (file.size > maxSize) {
+                showError('File size exceeds 20MB limit');
+                return;
+            }
+
+            const validTypes = ['application/pdf', 'image/jpeg', 'image/png', 'image/gif', 
+                              'image/bmp', 'image/tiff', 'image/webp'];
+            
+            if (!validTypes.includes(file.type) && !file.name.toLowerCase().endsWith('.pdf')) {
+                showError('Invalid file type. Please upload PDF or image file.');
+                return;
+            }
+
+            selectedFile = file;
+            fileInfo.textContent = `Selected: ${file.name} (${(file.size / 1024 / 1024).toFixed(2)} MB)`;
+            fileInfo.style.display = 'block';
+            hideError();
+            updateProcessButton();
+        }
+
+        // Update process button state
+        function updateProcessButton() {
+            const canProcess = sessionApiKey && selectedFile && proxyStatusState === 'online';
+            processBtn.disabled = !canProcess;
+            if (processBtn.disabled) {
+                processBtn.style.opacity = '0.5';
+                processBtn.style.cursor = 'not-allowed';
+            } else {
+                processBtn.style.opacity = '1';
+                processBtn.style.cursor = 'pointer';
+            }
+        }
+
+        // Process file with OCR
+        async function processFile() {
+            if (!selectedFile || !sessionApiKey || proxyStatusState !== 'online') {
+                showError('Please load API key, select a file, and make sure proxy server is running');
+                return;
+            }
+
+            processBtn.disabled = true;
+            processBtn.innerHTML = '⏳ Processing...';
+            hideError();
+            resultsSection.style.display = 'none';
+
+            try {
+                // Step 1: Upload file
+                showProcessing('Uploading file...');
+                const formData = new FormData();
+                formData.append('file', selectedFile);
+
+                const uploadResponse = await fetch('http://localhost:3001/api/upload', {
+                    method: 'POST',
+                    headers: {
+                        'X-API-Key': sessionApiKey
+                    },
+                    body: formData
+                });
+
+                if (!uploadResponse.ok) {
+                    const errorData = await uploadResponse.json();
+                    throw new Error(errorData.error || `Upload failed: ${uploadResponse.status}`);
+                }
+
+                const uploadResult = await uploadResponse.json();
+                console.log('File uploaded:', uploadResult);
+
+                // Step 2: Process OCR directly with file ID
+                showProcessing('Processing OCR (this may take a while)...');
+                const ocrResponse = await fetch('http://localhost:3001/api/ocr', {
+                    method: 'POST',
+                    headers: {
+                        'X-API-Key': sessionApiKey,
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        fileId: uploadResult.id,
+                        fileType: selectedFile.type
+                    })
+                });
+
+                if (!ocrResponse.ok) {
+                    const errorData = await ocrResponse.json();
+                    throw new Error(errorData.error || `OCR processing failed: ${ocrResponse.status}`);
+                }
+
+                ocrResults = await ocrResponse.json();
+                console.log('OCR completed:', ocrResults);
+
+                hideProcessing();
+                displayResults(ocrResults);
+            } catch (error) {
+                hideProcessing();
+                showError('OCR processing failed: ' + error.message);
+                console.error('Error:', error);
+            } finally {
+                processBtn.disabled = false;
+                processBtn.innerHTML = 'Process with OCR';
+                updateProcessButton();
+            }
+        }
+
+        // Display results
+        function displayResults(results) {
+            // Show preview
+            const firstPageMarkdown = results.pages?.[0]?.markdown || '';
+            const preview = firstPageMarkdown.substring(0, 500);
+            contentPreview.textContent = preview + (firstPageMarkdown.length > 500 ? '...' : '');
+
+            // Update stats
+            let totalPages = 0;
+            let totalImages = 0;
+
+            results.pages?.forEach((page, idx) => {
+                totalPages++;
+                if (page.images) {
+                    totalImages += page.images.length;
+                }
+            });
+            
+            document.getElementById('pages-count').textContent = totalPages;
+            document.getElementById('total-images').textContent = totalImages;
+            document.getElementById('image-count').textContent = totalImages;
+
+            // Enable/disable image download button
+            const downloadImagesBtn = document.getElementById('download-images');
+            if (totalImages === 0) {
+                downloadImagesBtn.disabled = true;
+                downloadImagesBtn.style.opacity = '0.5';
+                downloadImagesBtn.style.cursor = 'not-allowed';
+            } else {
+                downloadImagesBtn.disabled = false;
+                downloadImagesBtn.style.opacity = '1';
+                downloadImagesBtn.style.cursor = 'pointer';
+            }
+
+            resultsSection.style.display = 'block';
+        }
+
+        // Download functions
+        function downloadMarkdown() {
+            if (!ocrResults) return;
+
+            let content = '';
+            ocrResults.pages?.forEach((page, pageIdx) => {
+                if (page.markdown) {
+                    let pageMarkdown = page.markdown;
+                    
+                    // Fix image references to match downloadable filenames
+                    if (page.images) {
+                        page.images.forEach((image, imgIdx) => {
+                            if (image.id) {
+                                const format = image.format || 'png';
+                                const expectedFilename = `${selectedFile.name.split('.')[0]}_page${pageIdx + 1}_img${imgIdx + 1}.${format}`;
+                                // Replace ![id](id) with ![Image id](filename)
+                                pageMarkdown = pageMarkdown.replace(
+                                    new RegExp(`!\\[${image.id}\\]\\(${image.id}\\)`, 'g'),
+                                    `![Image ${image.id}](${expectedFilename})`
+                                );
+                            }
+                        });
+                    }
+                    
+                    content += pageMarkdown;
+                    if (pageIdx < ocrResults.pages.length - 1) {
+                        content += '\n\n';
+                    }
+                }
+            });
+
+            const blob = new Blob([content], { type: 'text/markdown' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `${selectedFile.name.split('.')[0]}.md`;
+            a.click();
+            URL.revokeObjectURL(url);
+        }
+
+        function downloadJSON() {
+            if (!ocrResults) return;
+
+            // Clean version without base64 images
+            const cleanResults = JSON.parse(JSON.stringify(ocrResults));
+            cleanResults.pages?.forEach(page => {
+                page.images?.forEach(image => {
+                    if (image.image_base64) {
+                        image.image_base64 = '[BASE64_DATA_REMOVED]';
+                    }
+                });
+            });
+
+            const blob = new Blob([JSON.stringify(cleanResults, null, 2)], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `${selectedFile.name.split('.')[0]}_full.json`;
+            a.click();
+            URL.revokeObjectURL(url);
+        }
+
+        function downloadImages() {
+            if (!ocrResults) return;
+
+            let imageCount = 0;
+            ocrResults.pages?.forEach((page, pageIdx) => {
+                page.images?.forEach((image, imgIdx) => {
+                    if (image.image_base64) {
+                        try {
+                            let b64Data = image.image_base64;
+                            if (b64Data.startsWith('data:image')) {
+                                b64Data = b64Data.split(',')[1];
+                            }
+
+                            const byteCharacters = atob(b64Data);
+                            const byteNumbers = new Array(byteCharacters.length);
+                            for (let i = 0; i < byteCharacters.length; i++) {
+                                byteNumbers[i] = byteCharacters.charCodeAt(i);
+                            }
+                            const byteArray = new Uint8Array(byteNumbers);
+
+                            const format = image.format || 'png';
+                            const blob = new Blob([byteArray], { type: `image/${format}` });
+                            const url = URL.createObjectURL(blob);
+                            
+                            const a = document.createElement('a');
+                            a.href = url;
+                            a.download = `${selectedFile.name.split('.')[0]}_page${pageIdx + 1}_img${imgIdx + 1}.${format}`;
+                            a.click();
+                            URL.revokeObjectURL(url);
+                            imageCount++;
+                        } catch (err) {
+                            console.error('Error downloading image:', err);
+                        }
+                    }
+                });
+            });
+
+            if (imageCount === 0) {
+                showError('No images found to download');
+            }
+        }
+
+        // Event listeners
+        dropZone.addEventListener('click', () => fileInput.click());
+        
+        dropZone.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            dropZone.classList.add('drag-over');
+        });
+
+        dropZone.addEventListener('dragleave', () => {
+            dropZone.classList.remove('drag-over');
+        });
+
+        dropZone.addEventListener('drop', (e) => {
+            e.preventDefault();
+            dropZone.classList.remove('drag-over');
+            const files = e.dataTransfer.files;
+            if (files.length > 0) {
+                handleFile(files[0]);
+            }
+        });
+
+        fileInput.addEventListener('change', (e) => {
+            if (e.target.files.length > 0) {
+                handleFile(e.target.files[0]);
+            }
+        });
+
+        processBtn.addEventListener('click', processFile);
+        refreshProxyBtn.addEventListener('click', checkProxyStatus);
+
+        // Key management listeners
+        saveKeyBtn.addEventListener('click', saveApiKey);
+        loadKeyBtn.addEventListener('click', loadApiKey);
+        clearKeyBtn.addEventListener('click', clearApiKey);
+
+        // Allow Enter key for password/API key
+        passwordInput.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter') {
+                loadApiKey();
+            }
+        });
+
+        apiKeyInput.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter') {
+                saveApiKey();
+            }
+        });
+
+        // Download button listeners
+        document.getElementById('download-markdown').addEventListener('click', downloadMarkdown);
+        document.getElementById('download-json').addEventListener('click', downloadJSON);
+        document.getElementById('download-images').addEventListener('click', downloadImages);
+
+        // Initialize
+        checkProxyStatus();
+        checkStoredKey();
+    </script>
+</body>
+</html>

@@ -1,0 +1,25 @@
+{
+  "name": "mistral-ocr-proxy",
+  "version": "1.1.0",
+  "description": "Simple proxy server for Mistral OCR API to bypass CORS restrictions",
+  "main": "proxy-server.js",
+  "scripts": {
+    "start": "node proxy-server.js",
+    "dev": "node proxy-server.js"
+  },
+  "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^4.22.1",
+    "form-data": "^4.0.5",
+    "multer": "^1.4.5-lts.2",
+    "node-fetch": "^2.7.0"
+  },
+  "keywords": [
+    "mistral",
+    "ocr",
+    "proxy",
+    "cors"
+  ],
+  "author": "",
+  "license": "MIT"
+}
