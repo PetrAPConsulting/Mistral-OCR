@@ -17,6 +17,15 @@ const upload = multer({ storage: storage });
 
 console.log('🚀 Mistral OCR Proxy Server starting...');
 
+// Validate multipart form data before multer processes it (CVE mitigation for multer < 2.0.1)
+app.use('/api/upload', (req, res, next) => {
+  const contentType = req.headers['content-type'] || '';
+  if (!contentType.includes('multipart/form-data')) {
+    return res.status(400).json({ error: 'Invalid content type - multipart/form-data required' });
+  }
+  next();
+});
+
 // Upload file to Mistral API
 app.post('/api/upload', upload.single('file'), async (req, res) => {
   try {
