@@ -8,6 +8,9 @@ A simple, self-hosted web application for optical character recognition (OCR) po
 - **Secure API Key Storage**: Your Mistral API key is encrypted locally in your browser using AES-256-GCM with PBKDF2 key derivation
 - **Multiple Export Formats**: Download results as Markdown, JSON, and extract embedded images
 - **Privacy-Focused**: All processing happens through your own proxy server - no data stored on external servers
+- **Choice of models**: proxy server and frontend are prepared for choice between two models (currently MistralOCR 2 and 3), As long as Mistral keeps the same API structure (/v1/ocr endpoint with the same request format), you can update the model identifiers in proxy-server.js:
+Line 90:
+`const validModels = ['mistral-ocr-2505', 'mistral-ocr-latest'];` 
 - **Simple Setup**: Just two files - an HTML frontend and a Node.js proxy server
 
 ## Prerequisites
@@ -40,9 +43,11 @@ A simple, self-hosted web application for optical character recognition (OCR) po
 
 3. Enter your Mistral API key and a password to encrypt it (the key is stored locally in your browser)
 
-4. Upload a document and click "Process with OCR"
+4. Select model for OCR, MistralOCR 2 is default model with API endpoint 'mistral-ocr-2505'
 
-5. Download results in your preferred format
+5. Upload a document and click "Process with OCR"
+
+6. Download results in your preferred format
 
 ## How It Works
 
