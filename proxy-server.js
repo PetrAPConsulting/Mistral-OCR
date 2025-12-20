@@ -80,19 +80,24 @@ app.post('/api/upload', upload.single('file'), async (req, res) => {
 app.post('/api/ocr', async (req, res) => {
   try {
     const apiKey = req.headers['x-api-key'];
-    const { fileId, fileType } = req.body; // Changed from signedUrl to fileId
+    const { fileId, fileType, model } = req.body;
 
     if (!apiKey) {
       return res.status(400).json({ error: 'Missing API key in headers' });
     }
 
+    // Validate and set model (default to OCR 2)
+    const validModels = ['mistral-ocr-2505', 'mistral-ocr-latest'];
+    const selectedModel = validModels.includes(model) ? model : 'mistral-ocr-2505';
+
     console.log('🔍 Processing OCR...');
     console.log('📄 File ID:', fileId);
     console.log('📄 File type:', fileType);
+    console.log('🤖 Model:', selectedModel);
 
     // Use file_id directly according to Mistral API docs
     const ocrRequest = {
-      model: 'mistral-ocr-latest',
+      model: selectedModel,
       document: {
         type: 'file',
         file_id: fileId  // Use file_id directly
