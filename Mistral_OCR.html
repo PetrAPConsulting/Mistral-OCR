@@ -268,6 +268,37 @@
                     </div>
                 </div>
 
+                <!-- Model Selection -->
+                <div style="margin-bottom: 2rem;">
+                    <label class="section-title">
+                        OCR Model
+                    </label>
+                    <div style="display: flex; gap: 1.5rem; padding: 1rem; background-color: #f8f9fa; border-radius: 6px; border: 1px solid #e5e7eb;">
+                        <label style="display: flex; align-items: center; gap: 0.5rem; cursor: pointer; color: #333333;">
+                            <input
+                                type="radio"
+                                name="ocr-model"
+                                value="mistral-ocr-2505"
+                                checked
+                                style="width: 1.1rem; height: 1.1rem; accent-color: #00A38C; cursor: pointer;"
+                            />
+                            <span style="font-size: 0.9rem;">MistralOCR 2</span>
+                        </label>
+                        <label style="display: flex; align-items: center; gap: 0.5rem; cursor: pointer; color: #333333;">
+                            <input
+                                type="radio"
+                                name="ocr-model"
+                                value="mistral-ocr-latest"
+                                style="width: 1.1rem; height: 1.1rem; accent-color: #00A38C; cursor: pointer;"
+                            />
+                            <span style="font-size: 0.9rem;">MistralOCR 3</span>
+                        </label>
+                    </div>
+                    <div style="margin-top: 0.5rem; font-size: 0.8rem; color: #666666; line-height: 1.5;">
+                        <strong style="color: #333333;">Note:</strong> MistralOCR 3 is better choice for tables and handwriting recognition (2x cost).
+                    </div>
+                </div>
+
                 <!-- File Upload -->
                 <div style="margin-bottom: 2rem;">
                     <label class="section-title">
@@ -400,6 +431,7 @@
         let sessionApiKey = '';
         let ocrResults = null;
         let proxyStatusState = 'unchecked';
+        let selectedModel = 'mistral-ocr-2505';
 
         // Encryption functions
         async function generateKey(password, salt) {
@@ -676,7 +708,8 @@
                     },
                     body: JSON.stringify({
                         fileId: uploadResult.id,
-                        fileType: selectedFile.type
+                        fileType: selectedFile.type,
+                        model: selectedModel
                     })
                 });
 
@@ -876,6 +909,13 @@
         saveKeyBtn.addEventListener('click', saveApiKey);
         loadKeyBtn.addEventListener('click', loadApiKey);
         clearKeyBtn.addEventListener('click', clearApiKey);
+
+        // Model selection listeners
+        document.querySelectorAll('input[name="ocr-model"]').forEach(radio => {
+            radio.addEventListener('change', (e) => {
+                selectedModel = e.target.value;
+            });
+        });
 
         // Allow Enter key for password/API key
         passwordInput.addEventListener('keydown', (e) => {
