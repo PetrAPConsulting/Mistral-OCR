@@ -87,10 +87,10 @@ app.post('/api/ocr', async (req, res) => {
     }
 
     // Validate and set model (default to OCR 2)
-    const validModels = ['mistral-ocr-2505', 'mistral-ocr-latest'];
+    const validModels = ['mistral-ocr-2505', 'mistral-ocr-2512'];
     const selectedModel = validModels.includes(model) ? model : 'mistral-ocr-2505';
 
-    console.log('🔍 Processing OCR...');
+    console.log('🧠 Processing OCR...');
     console.log('📄 File ID:', fileId);
     console.log('📄 File type:', fileType);
     console.log('🤖 Model:', selectedModel);
@@ -116,8 +116,8 @@ app.post('/api/ocr', async (req, res) => {
       body: JSON.stringify(ocrRequest)
     });
 
-    console.log(`📊 OCR Response status: ${response.status}`);
-    console.log(`📊 OCR Response headers:`, [...response.headers.entries()]);
+    console.log(`📝 OCR Response status: ${response.status}`);
+    console.log(`📝 OCR Response headers:`, [...response.headers.entries()]);
 
     // Check if response is HTML (error page) instead of JSON
     const contentType = response.headers.get('content-type');
@@ -146,7 +146,27 @@ app.post('/api/ocr', async (req, res) => {
     }
 
     console.log('✅ OCR processing completed');
-    console.log('📊 OCR result pages:', responseData.pages?.length || 0);
+    console.log('📝 OCR result pages:', responseData.pages?.length || 0);
+
+    // Delete file from Mistral servers after successful OCR
+    try {
+      console.log('🔥 Deleting file from Mistral servers...');
+      const deleteResponse = await fetch(`https://api.mistral.ai/v1/files/${fileId}`, {
+        method: 'DELETE',
+        headers: {
+          'Authorization': `Bearer ${apiKey}`
+        }
+      });
+
+      if (deleteResponse.ok) {
+        console.log('✅ File deleted successfully from Mistral servers');
+      } else {
+        console.warn('❌ Failed to delete file:', deleteResponse.status);
+      }
+    } catch (deleteError) {
+      console.warn('❌ Error deleting file (non-critical):', deleteError.message);
+    }
+
     res.json(responseData);
 
   } catch (error) {
@@ -161,8 +181,8 @@ app.get('/health', (req, res) => {
 });
 
 app.listen(port, () => {
-  console.log(`✅ Proxy server running at http://localhost:${port}`);
-  console.log('📋 Available endpoints:');
+  console.log(`💻 Proxy server running at http://localhost:${port}`);
+  console.log('📌 Available endpoints:');
   console.log('   POST /api/upload - Upload file to Mistral');
   console.log('   POST /api/ocr - Process OCR (uses file_id directly)');
   console.log('   GET  /health - Health check');
