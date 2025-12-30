@@ -8,9 +8,9 @@ A simple, self-hosted web application for optical character recognition (OCR) po
 - **Secure API Key Storage**: Your Mistral API key is encrypted locally in your browser using AES-256-GCM with PBKDF2 key derivation
 - **Multiple Export Formats**: Download results as Markdown, JSON, and extract embedded images
 - **Privacy-Focused**: All processing happens through your own proxy server - no data stored on external servers
-- **Choice of models**: proxy server and frontend are prepared for choice between two models (currently MistralOCR 2 and 3), As long as Mistral keeps the same API structure (/v1/ocr endpoint with the same request format), you can update the model identifiers in proxy-server.js:
+- **Choice of models**: proxy server and frontend are prepared for choice between two models (currently Mistral OCR 2 and 3), As long as Mistral keeps the same API structure (/v1/ocr endpoint with the same request format), you can update the model identifiers in proxy-server.js:
 Line 90:
-`const validModels = ['mistral-ocr-2505', 'mistral-ocr-latest'];` 
+`const validModels = ['mistral-ocr-2505', 'mistral-ocr-2512'];` 
 - **Simple Setup**: Just two files - an HTML frontend and a Node.js proxy server
 
 ## Prerequisites
@@ -37,16 +37,16 @@ Line 90:
    ```bash
    npm start
    ```
-   The server will run on `http://localhost:3001` You can change local server if this one is already used. Do not forget make change in HTML front end and `proxy-server.js`
-
-2. Open `Mistral_OCR.html` in your web browser
-
-3. Enter your Mistral API key and a password to encrypt it (the key is stored locally in your browser)
+2. Open web browser and open
+   ```bash
+   http://localhost:3001
+   ```
+3. Enter your Mistral API key and a password to encrypt it (the key is stored encrypted locally in your browser)
 
 4. Select model for OCR, MistralOCR 2 is default model with API endpoint 'mistral-ocr-2505'
 
 5. Upload a document and click "Process with OCR"
-
+   
 6. Download results in your preferred format
 
 ## How It Works
@@ -82,9 +82,13 @@ The proxy server is necessary because browsers block direct API calls to Mistral
 
 ```
 mistral-ocr/
-├── Mistral_OCR.html    # Frontend web interface
+├── index.html          # Frontend
+├── Assets              # Frontend components
+      └── favicon.png
+      └── images.png
 ├── proxy-server.js     # Node.js proxy server
-├── package.json        # Dependencies
+├── package.json        # Dependencies configuration
+├── node_modules        # Installed dependencies
 └── README.md           # This file
 ```
 
@@ -99,6 +103,10 @@ mistral-ocr/
 ## License
 
 MIT License - see [LICENSE](LICENSE) for details.
+
+## Version
+
+ver. 1.2.0 December 2025
 
 ## Acknowledgments
 
