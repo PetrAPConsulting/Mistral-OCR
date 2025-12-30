@@ -10,6 +10,7 @@ const port = 3001;
 // Enable CORS for all routes
 app.use(cors());
 app.use(express.json());
+app.use(express.static(__dirname));
 
 // Configure multer for file uploads
 const storage = multer.memoryStorage();
